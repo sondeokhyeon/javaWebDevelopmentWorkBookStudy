@@ -2,7 +2,7 @@
 
 ## 개인 공부용입니다
 
-### 자바웹개발워크북. 171109 학습
+### 자바웹개발워크북.
 저자 엄진영  
 
 ---
@@ -172,3 +172,57 @@
 
 			servlt-context sc = this.getServletContext();
 			sc.getInitParameter("key");
+
+
+
+#### 6. servletFilter
+
+			필터는 서블릿 실행 전후에 어떤 작업을 하고사 할때 사용하는 기술이다.
+			예를들면 클라이언트가 보낸 데이터의 암호를 해제한다거나 서블릿이 실행되기 전에
+			필요한 자원을 미리 준비한다거나 서블릿이 실행될 떄마다 로그를 남긴다거나 하는 작업을
+			필터를 통하여 처리할 수 있다.
+
+			필터는	Filter를 구현하는 것으로 만들수있다
+			필터를 구성하는 메소드는 init(), doFilter(), destroy()가 있다.
+
+			init()는 필터 객체 생성시 한번만 호출되는 메소드로 Servlet의 init()와 같은 용도이다
+			dofilter()는 URL에 대해 요청이 들어오면 항상 호출되는 메소드로 필터가 할일을 작성하면 된다.
+
+			public void doFilter(ServletRequest req, ServletResponse res, FilterChain nextFilter)
+			throws IOException, ServletException {
+					/* 서블릿이 실행되기 전 해야 할 작업 /*
+					// 다음 필터를 호출 더이상 필터가 없다면 서블릿의 service()를 호출
+				nextFilter.doFilter(req, res);
+
+				/*  서블릿을 실행한 후 클라이언트에게 응답하기 전에 해야할 작업/*
+			}
+
+			서블릿이 실행되기 전에 처리할 작업이 있다면 nextFilter.doFilter() 호출전에 작성
+			서블릿이 실행후에 처리할 작업이 있다면 nextFilter.doFilter() 호출하는 코드 다음 작성
+
+			destroy()는 웹 애플리케이션이 종료하기 전에 필터들이 마무리해야 할 작업을 할때 사용
+
+			필터의 사용은 DD파일에서 등록과 어노테이션을 이용한 방법이 있다.
+
+			DD파일은 아래와 같이 작성하면 필터가 적용되며
+			<filter>
+						<filter-name>필터별명</filter-name>
+						<filter-class>실제 필터 경로</filter-class>
+
+						<init-param>
+								<param-name>키</param-name>
+								<param-value>벨류</param-value>
+						</init-param>
+			</filter>
+
+			<filter-mapping>
+						<filter-name>사용할 필터 별명</filter-name>
+						<url-pattern>적용시킬 URL</url-pattern>
+			</filter-mapping>
+
+			class 에서 사용은 필터에서 어노테이션을 통하여 아래와 같이 사용 가능하다
+			@WebFilter(
+					URLPatterns="적용시킬 URL".
+					init-param={
+							@WebInitParam(name="키", value="벨류")
+					})
