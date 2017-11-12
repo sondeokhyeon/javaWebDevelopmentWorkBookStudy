@@ -58,7 +58,7 @@ public class MemberUpdateServlet extends HttpServlet {
 				out.println("<input type='submit' value='전송'>");
 				out.println("<input type='button' value='삭제' onclick='location.href=\"delete?no=" 
 							+ req.getParameter("no") + "\"'>");
-				out.println("<input type='button' value='취소' onclick='location.href=\"list\"'>" );
+				out.println("<input type='button' value='취소' onclick='location.href=\"list2\"'>" );
 				out.println("</form>");
 				out.println("</body></html>");
 			} catch (Exception e) {
